@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+
+
+
+   <!-- mobile / viewport stuff -->
+   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+   <meta name="apple-touch-fullscreen" content="yes">
+   <meta name="apple-mobile-web-app-capable" content="yes">
+
+
+
+   <title>Rotate Cube with Mouse - Three.js</title>
+   <style>
+      body,
+      canvas,
+      .divMain,
+      #divCubeCanvas {
+         width: 100%;
+         height: 100%;
+         max-width: 100vh;
+         max-height: 100vh;
+         margin: 0;
+         background-color: #222;
+         user-select: none;
+
+      }
+
+      small {
+         color: white;
+         background-color: #223311;
+         padding: .07em .35em;
+         border-radius: 2px;
+         pointer-events: none;
+      }
+
+      #divSliderControls {
+         position: absolute;
+         bottom: 0;
+         padding: 0;
+         margin: 0;
+         width: 45%;
+
+      }
+
+
+
+
+      /* range inputs: */
+      :root {
+         --range-track-color: #86375d;
+         --range-track-active-color: #460727;
+         --range-track-height: 26px;
+         --range-track-border-radius: 11px;
+         --range-track-hover-color: #6c294a;
+
+         --range-thumb-color: #bb4646;
+         --range-thumb-size: 35px;
+         --range-thumb-border-radius: 47.5%;
+         --range-thumb-hover-color: #eb6161;
+         --range-thumb-active-color: #922222;
+      }
+
+      input[type="range"] {
+         -webkit-appearance: none;
+         width: 100%;
+         height: var(--range-thumb-size);
+         background: transparent;
+         margin: 4px;
+         padding: 1px;
+         cursor: pointer;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track {
+         width: 100%;
+         height: var(--range-track-height);
+         background: var(--range-track-color);
+         border-radius: var(--range-track-border-radius);
+         cursor: pointer;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+         -webkit-appearance: none;
+         width: var(--range-thumb-size);
+         height: var(--range-thumb-size);
+         background: var(--range-thumb-color);
+         border-radius: var(--range-thumb-border-radius);
+         margin-top: -4px;
+         cursor: pointer;
+         transition: background 0.085s;
+      }
+
+      input[type="range"]::-webkit-slider-runnable-track:hover {
+         background: var(--range-track-hover-color);
+      }
+
+      input[type="range"]::-webkit-slider-thumb:hover {
+         background: var(--range-thumb-hover-color);
+      }
+
+      input[type="range"]::-webkit-slider-thumb:active {
+         background: var(--range-thumb-active-color);
+      }
+   </style>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/controls/OrbitControls.js"></script>
+
+</head>
+
+
+
+<body>
+   <div class="divMain">
+
+      <div id="divCubeCanvas"></div>
+
+      <div id="divSliderControls">
+
+         <input id="inpZoomSlider" hidden /><br />
+
+         <small>margin / spread</small><br />
+         <input id="inpMarginSlider" type="range" min="2.0" max="3.5" step="0.25" value="2.5" /><br /><br />
+
+         <small>y separation</small><br />
+         <input id="inpYScaleFactorSlider" type="range" min="0.75" max="3.25" step="0.5" value="1.25" /><br /><br />
+
+         <button id="btnExplodeCubes">eplode</button><br />
+      </div>
+   </div>
+   <script src="dist/main.js"></script>
+
+
+</body>
+
+
+
+
+</html>
