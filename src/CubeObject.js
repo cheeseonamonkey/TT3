@@ -1,3 +1,5 @@
+import { ClaimState } from './ClaimState.js';
+
 export class CubeObject {
     constructor(parentScene, renderer, camera, parentGame, coords) {
         this.parentScene = parentScene;
@@ -36,50 +38,61 @@ export class CubeObject {
         event.preventDefault();
         event.stopPropagation();
 
-        // Calculate the mouse position relative to the canvas element
+        const game = this.parentGame;
+        
+        // Check if game is over
+        if (game.gameOver) {
+            console.log("Game is over!");
+            return;
+        }
+
+        // Check if current player is human
+        const currentPlayer = game.players[game.currentPlayerIndex];
+        if (!currentPlayer.isHuman) {
+            console.log("Wait for AI to move!");
+            return;
+        }
+
+        // Calculate mouse position relative to canvas
         const canvasBounds = this.renderer.domElement.getBoundingClientRect();
         const mouseX = ((event.clientX - canvasBounds.left) / canvasBounds.width) * 2 - 1;
         const mouseY = -((event.clientY - canvasBounds.top) / canvasBounds.height) * 2 + 1;
 
-        // Set the mouse position for raycasting
         this.mouse.set(mouseX, mouseY);
-        // Raycast from the camera to the mouse position
         this.raycaster.setFromCamera(this.mouse, this.camera);
 
-        // Find the first intersected cube
+        // Find intersected cube
         const intersects = this.raycaster.intersectObjects(this.parentScene.children, true);
         const intersectedCube = intersects.find(intersect => intersect.object.userData.cubeObjectRef);
 
-        // Check if an intersected cube was found
         if (intersectedCube) {
-            let cubeObject = intersectedCube;
-            let cubeSelected = intersectedCube.object.userData.cubeObjectRef;
-            let game = this.parentGame;
-            let cubeSet = game.cubeSet;
+            const cubeObject = intersectedCube.object.userData.cubeObjectRef;
+            const cubeSet = game.cubeSet;
+            
+            // Get the logical cube from CubeSet
+            const logicalCube = cubeSet.findByCoords(
+                cubeObject.coords.x,
+                cubeObject.coords.y,
+                cubeObject.coords.z
+            );
 
-            const currentPlayer = game.players[game.currentPlayerIndex];
-
-            // player makes move...
-            currentPlayer.makeMove(cubeSet, true);
-
-            console.log(game);
-            console.log(cubeObject);
-            console.log(cubeSelected);
-            console.log(currentPlayer);
-
-            if (cubeSelected)
-                if (game.currentPlayerIndex == 0)
-                    cubeSelected.setColor(0xff0000); // Change the color to red
-                else if (game.currentPlayerIndex == 1)
-                    cubeSelected.setColor(0x1111ff); // Change the color to blue
-
-            const consecutiveClaims = cubeSet.getConsecutiveClaims(3);
-            if (consecutiveClaims.length > 0) {
-                console.log("consecutive 3 claims: ", consecutiveClaims);
-                console.log(`Game over! ${game.winner} wins!`);
-            } else {
-                game.switchPlayers();
+            // Check if cube is empty
+            if (logicalCube.claimState !== ClaimState.EMPTY) {
+                console.log("Cube already claimed!");
+                return;
             }
+
+            // Claim the cube
+            logicalCube.claimState = currentPlayer.claimSymbol;
+
+            // Update visual
+            const color = game.currentPlayerIndex === 0 ? 0xff0000 : 0x1111ff;
+            cubeObject.setColor(color);
+
+            console.log(`${currentPlayer.name} claimed cube at (${logicalCube.x}, ${logicalCube.y}, ${logicalCube.z})`);
+
+            // Check win condition and switch players
+            game.checkWinCondition();
         }
     }
 }

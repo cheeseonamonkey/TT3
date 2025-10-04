@@ -1,8 +1,3 @@
-//import { CubeSet } from './CubeSet.js';
-//import { Player } from './Player.js';
-//import { ClaimState } from './ClaimState.js';
-//import { CubesScene } from './CubesScene.js';
-
 import { ClaimState } from "./ClaimState";
 import { CubesScene } from "./CubeScene";
 import { CubeSet } from "./CubeSet";
@@ -13,8 +8,8 @@ export class Game {
         this.cubeScene = null;
         this.cubeSet = new CubeSet(this);
         this.players = [
-            new Player("Player 1", ClaimState.X),
-            new Player("Player 2", ClaimState.O),
+            new Player("Player 1", ClaimState.X, true),  // Human player
+            new Player("Player 2", ClaimState.O, false), // AI player
         ];
         this.currentPlayerIndex = 0;
         this.winner = null;
@@ -24,6 +19,42 @@ export class Game {
     switchPlayers(verbose = false) {
         this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
         if (verbose) console.log("the current player is now: " + this.currentPlayer);
+        
+        // If next player is AI, make their move
+        const currentPlayer = this.players[this.currentPlayerIndex];
+        if (!currentPlayer.isHuman && !this.gameOver) {
+            setTimeout(() => this.makeAIMove(), 500); // Delay for better UX
+        }
+    }
+
+    makeAIMove() {
+        if (this.gameOver) return;
+        
+        const currentPlayer = this.players[this.currentPlayerIndex];
+        const move = currentPlayer.makeMove(this.cubeSet);
+        
+        if (move) {
+            // Update visual representation
+            const cubeObject = this.cubeScene.findByCoordinates(move.x, move.y, move.z);
+            if (cubeObject) {
+                const color = this.currentPlayerIndex === 0 ? 0xff0000 : 0x1111ff;
+                cubeObject.setColor(color);
+            }
+            
+            this.checkWinCondition();
+        }
+    }
+
+    checkWinCondition() {
+        const consecutiveClaims = this.cubeSet.getConsecutiveClaims(3);
+        if (consecutiveClaims.length > 0) {
+            this.gameOver = true;
+            this.winner = this.players[this.currentPlayerIndex];
+            console.log(`Game over! ${this.winner.name} wins!`);
+            alert(`${this.winner.name} wins!`);
+        } else {
+            this.switchPlayers();
+        }
     }
 
     render() {

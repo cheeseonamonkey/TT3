@@ -1,12 +1,18 @@
 import { ClaimState } from './ClaimState.js';
 
 export class Player {
-    constructor(name, claimSymbol) {
+    constructor(name, claimSymbol, isHuman = false) {
         this.name = name;
         this.claimSymbol = claimSymbol;
+        this.isHuman = isHuman;
     }
 
     makeMove(cubeSet, verboseConsole = false) {
+        // If human, don't auto-move (handled by click)
+        if (this.isHuman) {
+            return null;
+        }
+
         const winningMove = this.getWinningMove(cubeSet);
         if (winningMove) {
             return winningMove;
