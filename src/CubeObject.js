@@ -75,6 +75,7 @@ export class CubeObject {
                 cubeObject.coords.y,
                 cubeObject.coords.z
             );
+            
 
             // Check if cube is empty
             if (logicalCube.claimState !== ClaimState.EMPTY) {
