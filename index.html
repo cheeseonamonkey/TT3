@@ -1,33 +1,57 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
-
-
-
-   <!-- mobile / viewport stuff -->
-   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css">
    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
    <meta name="apple-touch-fullscreen" content="yes">
    <meta name="apple-mobile-web-app-capable" content="yes">
-
-
-
+   <link rel="stylesheet" href="https://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css">
+   
    <title>TicTacThree - new game</title>
    <style>
-      body,
-      canvas,
-      .divMain,
-      #divCubeCanvas {
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      
+      body {
+         width: 100vw;
+         height: 100vh;
+         background-color: #222;
+         overflow: hidden;
+         user-select: none;
+      }
+
+      .divMain {
          width: 100%;
          height: 100%;
-         max-width: 100vh;
-         max-height: 100vh;
-         margin: 0;
-         background-color: #222;
-         user-select: none;
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+      }
 
+      #divCubeCanvas {
+         width: min(100vw, 100vh);
+         height: min(100vw, 100vh);
+         position: relative;
+      }
+
+      #gameStatus {
+         position: absolute;
+         top: 10px;
+         left: 50%;
+         transform: translateX(-50%);
+         color: #fff;
+         font: bold 24px sans-serif;
+         text-shadow: 2px 2px 4px #000;
+         pointer-events: none;
+         z-index: 10;
+      }
+
+      #divSliderControls {
+         position: absolute;
+         bottom: 10px;
+         left: 50%;
+         transform: translateX(-50%);
+         width: min(65%, 400px);
+         z-index: 10;
       }
 
       small {
@@ -38,27 +62,13 @@
          pointer-events: none;
       }
 
-      #divSliderControls {
-         transform: scaleY(0.8), translateY(-0.2);
-         position: absolute;
-         bottom: 0;
-         padding: 0;
-         margin: 0;
-         width: 65%;
-
-      }
-
-
-
-
-      /* range inputs: */
+      /* range inputs */
       :root {
          --range-track-color: #86375d;
          --range-track-active-color: #460727;
          --range-track-height: 21px;
          --range-track-border-radius: 10px;
          --range-track-hover-color: #6c294a;
-
          --range-thumb-color: #bb4646;
          --range-thumb-size: 30px;
          --range-thumb-border-radius: 47.5%;
@@ -71,8 +81,7 @@
          width: 100%;
          height: var(--range-thumb-size);
          background: transparent;
-         margin: 2px;
-         padding: 1px;
+         margin: 2px 0;
          cursor: pointer;
       }
 
@@ -106,39 +115,29 @@
       input[type="range"]::-webkit-slider-thumb:active {
          background: var(--range-thumb-active-color);
       }
+
+      button {
+         margin: 0;
+         padding: 8px 16px;
+         cursor: pointer;
+      }
    </style>
    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/three@0.132.0/examples/js/controls/OrbitControls.js"></script>
-
 </head>
-
-
 
 <body>
    <div class="divMain">
-
       <div id="divCubeCanvas"></div>
-
-      <div id="gameStatus" style="position:absolute;top:10px;left:50%;transform:translateX(-50%);color:#fff;font:bold 24px sans-serif;text-shadow:2px 2px 4px #000;pointer-events:none;">Your turn</div>
+      <div id="gameStatus">Your turn</div>
       <div id="divSliderControls">
-
-         <!-- <input id="inpZoomSlider" hidden /> -->
-
          <small>margin / spread</small><br />
          <input id="inpMarginSlider" type="range" min="2.0" max="3.5" step="0.25" value="2.5" /><br />
-
          <small>y separation</small><br />
          <input id="inpYScaleFactorSlider" type="range" min="0.75" max="3.25" step="0.5" value="1.25" /><br />
-
-         <button style="margin: 0;" id="btnExplodeCubes">eplode</button>
+         <button id="btnExplodeCubes">eplode</button>
       </div>
    </div>
    <script src="./dist/main.js"></script>
-
-
 </body>
-
-
-
-
 </html>
