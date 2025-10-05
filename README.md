@@ -6,12 +6,9 @@ Custom 3D rendering, mobile-friendly touch controls, raycasting-based UI, strate
 
 **[Live site](https://cheeseonamonkey.github.io/TT3/)**
 
+---
+
 **Stack**:
 Three.js • Rollup • GitHub Actions • ES6
-
-
-
-
----
 
 Built from scratch using my brain.
