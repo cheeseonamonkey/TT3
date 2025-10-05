@@ -33,18 +33,18 @@
       small {
          color: white;
          background-color: #223311;
-         padding: .07em .35em;
+         padding: .07em .1em;
          border-radius: 2px;
          pointer-events: none;
       }
 
       #divSliderControls {
-         transform: scaleY(0.7);
+         transform: scaleY(0.8), translateY(-0.1);
          position: absolute;
          bottom: 0;
          padding: 0;
          margin: 0;
-         width: 45%;
+         width: 65%;
 
       }
 
@@ -55,12 +55,12 @@
       :root {
          --range-track-color: #86375d;
          --range-track-active-color: #460727;
-         --range-track-height: 26px;
-         --range-track-border-radius: 11px;
+         --range-track-height: 21px;
+         --range-track-border-radius: 10px;
          --range-track-hover-color: #6c294a;
 
          --range-thumb-color: #bb4646;
-         --range-thumb-size: 35px;
+         --range-thumb-size: 30px;
          --range-thumb-border-radius: 47.5%;
          --range-thumb-hover-color: #eb6161;
          --range-thumb-active-color: #922222;
@@ -71,7 +71,7 @@
          width: 100%;
          height: var(--range-thumb-size);
          background: transparent;
-         margin: 4px;
+         margin: 2px;
          padding: 1px;
          cursor: pointer;
       }
