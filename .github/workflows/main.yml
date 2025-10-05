@@ -23,6 +23,7 @@ jobs:
       run: |
         cp index.html dist/
         cp index.js dist/
+        tree -a dist
     
     - uses: actions/upload-artifact@v4
       with:
