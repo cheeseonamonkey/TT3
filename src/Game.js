@@ -20,13 +20,15 @@ export class Game {
         this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
         if (verbose) console.log("the current player is now: " + this.currentPlayer);
         
-        // If next player is AI, make their move
+        // Update status
         const currentPlayer = this.players[this.currentPlayerIndex];
+        document.getElementById('gameStatus').textContent = currentPlayer.isHuman ? 'Your turn!' : "Opponent's turn...";
+        
+        // If next player is AI, make their move
         if (!currentPlayer.isHuman && !this.gameOver) {
-            setTimeout(() => this.makeAIMove(), 500); // Delay for better UX
+            setTimeout(() => this.makeAIMove(), ((Math.random() * 1300)+550)); // Delay for better UX
         }
     }
-
     makeAIMove() {
         if (this.gameOver) return;
         
